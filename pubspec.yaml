@@ -47,6 +47,9 @@ dependencies:
   
   # For password hashing
   crypto: ^3.0.6
+  
+  # For session management
+  shared_preferences: ^2.3.4
 
 dev_dependencies:
   flutter_test:

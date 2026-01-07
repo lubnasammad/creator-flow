@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'screens/login_screen.dart';
+import 'screens/dashboard_screen.dart';
+import 'services/session_manager.dart';
 
 void main() {
   runApp(const CreatorFlowApp());
@@ -27,44 +30,47 @@ class CreatorFlowApp extends StatelessWidget {
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
-      home: const PlaceholderScreen(),
+      home: const AuthCheck(),
     );
   }
 }
 
-class PlaceholderScreen extends StatelessWidget {
-  const PlaceholderScreen({super.key});
+class AuthCheck extends StatefulWidget {
+  const AuthCheck({super.key});
+
+  @override
+  State<AuthCheck> createState() => _AuthCheckState();
+}
+
+class _AuthCheckState extends State<AuthCheck> {
+  final _sessionManager = SessionManager();
+  bool _isChecking = true;
+  bool _isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkSession();
+  }
+
+  Future<void> _checkSession() async {
+    final isLoggedIn = await _sessionManager.isLoggedIn();
+    setState(() {
+      _isLoggedIn = isLoggedIn;
+      _isChecking = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Creator Flow'), centerTitle: true),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.calendar_today_rounded,
-              size: 100,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Creator Flow',
-              style: Theme.of(
-                context,
-              ).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Manage your creative journey',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
+    if (_isChecking) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
         ),
-      ),
-    );
+      );
+    }
+
+    return _isLoggedIn ? const DashboardScreen() : const LoginScreen();
   }
 }
