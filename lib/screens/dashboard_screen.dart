@@ -4,6 +4,7 @@ import '../services/session_manager.dart';
 import 'login_screen.dart';
 import 'add_shooting_screen.dart';
 import 'add_posting_screen.dart';
+import 'add_brand_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -257,10 +258,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   icon: Icons.handshake_outlined,
                   label: 'Brand',
                   color: Colors.orange,
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Add Brand - Coming soon')),
+                  onTap: () async {
+                    final result = await Navigator.of(context).push<bool>(
+                      MaterialPageRoute(
+                        builder: (context) => const AddBrandScreen(),
+                      ),
                     );
+                    if (result == true && mounted) {
+                      setState(() {});
+                    }
                   },
                 ),
               ),
@@ -413,11 +419,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ListTile(
               leading: const Icon(Icons.handshake_outlined),
               title: const Text('Add Brand Collaboration'),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Add Brand - Coming soon')),
+                final result = await Navigator.of(context).push<bool>(
+                  MaterialPageRoute(
+                    builder: (context) => const AddBrandScreen(),
+                  ),
                 );
+                if (result == true && mounted) {
+                  setState(() {});
+                }
               },
             ),
             ListTile(
