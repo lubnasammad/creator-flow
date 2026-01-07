@@ -6,6 +6,10 @@ import 'add_shooting_screen.dart';
 import 'add_posting_screen.dart';
 import 'add_brand_screen.dart';
 import 'add_barter_screen.dart';
+import 'shooting_list_screen.dart';
+import 'posting_list_screen.dart';
+import 'brand_list_screen.dart';
+import 'barter_list_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -345,30 +349,120 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildListView() {
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            Icons.list_alt_outlined,
-            size: 80,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          const SizedBox(height: 16),
           Text(
-            'List View',
+            'Your Schedules & Collaborations',
             style: Theme.of(
               context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 8),
-          Text(
-            'Coming soon...',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+          const SizedBox(height: 16),
+          Expanded(
+            child: ListView(
+              children: [
+                _buildListCard(
+                  context,
+                  'Shooting Schedules',
+                  'Manage your content shooting schedules',
+                  Icons.camera_alt_outlined,
+                  Colors.purple,
+                  const ShootingListScreen(),
+                ),
+                const SizedBox(height: 12),
+                _buildListCard(
+                  context,
+                  'Posting Schedules',
+                  'Track your posting timelines',
+                  Icons.post_add_outlined,
+                  Colors.blue,
+                  const PostingListScreen(),
+                ),
+                const SizedBox(height: 12),
+                _buildListCard(
+                  context,
+                  'Brand Collaborations',
+                  'View your paid brand partnerships',
+                  Icons.handshake_outlined,
+                  Colors.orange,
+                  const BrandListScreen(),
+                ),
+                const SizedBox(height: 12),
+                _buildListCard(
+                  context,
+                  'Barter Collaborations',
+                  'Manage your barter deals',
+                  Icons.swap_horiz_outlined,
+                  Colors.teal,
+                  const BarterListScreen(),
+                ),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildListCard(
+    BuildContext context,
+    String title,
+    String subtitle,
+    IconData icon,
+    Color color,
+    Widget screen,
+  ) {
+    return Card(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (context) => screen));
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, color: color, size: 28),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.chevron_right,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
