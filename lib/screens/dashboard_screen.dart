@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../services/session_manager.dart';
 import 'login_screen.dart';
+import 'add_shooting_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -215,12 +216,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   icon: Icons.camera_alt_outlined,
                   label: 'Shooting',
                   color: Colors.purple,
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Add Shooting - Coming soon'),
+                  onTap: () async {
+                    final result = await Navigator.of(context).push<bool>(
+                      MaterialPageRoute(
+                        builder: (context) => const AddShootingScreen(),
                       ),
                     );
+                    if (result == true && mounted) {
+                      setState(() {});
+                    }
                   },
                 ),
               ),
@@ -375,11 +379,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ListTile(
               leading: const Icon(Icons.camera_alt_outlined),
               title: const Text('Add Shooting Schedule'),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Add Shooting - Coming soon')),
+                final result = await Navigator.of(context).push<bool>(
+                  MaterialPageRoute(
+                    builder: (context) => const AddShootingScreen(),
+                  ),
                 );
+                if (result == true && mounted) {
+                  setState(() {});
+                }
               },
             ),
             ListTile(
