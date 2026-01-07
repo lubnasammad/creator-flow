@@ -5,6 +5,7 @@ import 'login_screen.dart';
 import 'add_shooting_screen.dart';
 import 'add_posting_screen.dart';
 import 'add_brand_screen.dart';
+import 'add_barter_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -273,13 +274,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: _QuickActionCard(
-                  icon: Icons.compare_arrows_outlined,
+                  icon: Icons.swap_horiz_outlined,
                   label: 'Barter',
-                  color: Colors.green,
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Add Barter - Coming soon')),
+                  color: Colors.teal,
+                  onTap: () async {
+                    final result = await Navigator.of(context).push<bool>(
+                      MaterialPageRoute(
+                        builder: (context) => const AddBarterScreen(),
+                      ),
                     );
+                    if (result == true && mounted) {
+                      setState(() {});
+                    }
                   },
                 ),
               ),
@@ -432,13 +438,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.compare_arrows_outlined),
+              leading: const Icon(Icons.swap_horiz_outlined),
               title: const Text('Add Barter Collaboration'),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Add Barter - Coming soon')),
+                final result = await Navigator.of(context).push<bool>(
+                  MaterialPageRoute(
+                    builder: (context) => const AddBarterScreen(),
+                  ),
                 );
+                if (result == true && mounted) {
+                  setState(() {});
+                }
               },
             ),
           ],
